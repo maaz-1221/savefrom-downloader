@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Online Video Downloader - SaveFrom.net</title>
+  <meta name="description" content="Download videos from YouTube, Instagram, Facebook, TikTok, and 1000+ websites with SaveFrom.net. Fast, free, and in HD quality!">
+  <link rel="icon" type="image/svg+xml" href="/static/img/download.svg">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="/" class="logo-area">
+        <img src="/static/img/logo.svg" alt="SaveFrom.net" class="logo-img" onerror="this.onerror=null; this.src='/static/img/download.svg';">
+        <div class="logo-text">SaveFrom<span>.net</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#downloader" class="active">Home</a></li>
+        <li><a href="#downloader" onclick="document.getElementById('sf_url').placeholder='Paste YouTube video link here...'; document.getElementById('sf_url').focus();">YouTube</a></li>
+        <li><a href="#downloader" onclick="document.getElementById('sf_url').placeholder='Paste Instagram reel/video link here...'; document.getElementById('sf_url').focus();">Instagram</a></li>
+        <li><a href="#downloader" onclick="document.getElementById('sf_url').placeholder='Paste TikTok video link here...'; document.getElementById('sf_url').focus();">TikTok</a></li>
+        <li><a href="#downloader" onclick="document.getElementById('sf_url').placeholder='Paste Facebook video link here...'; document.getElementById('sf_url').focus();">Facebook</a></li>
+        <li><a href="#how-to">How to use</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+
+      <div class="header-actions">
+        <a href="#downloader" class="btn-header-install">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+          </svg>
+          Download App
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== HERO / DOWNLOADER SECTION ==================== -->
+  <section class="hero-section" id="downloader">
+    <div class="container">
+      <h1 class="hero-title">Free Online Video Downloader</h1>
+      <p class="hero-subtitle">
+        Download videos from popular platforms including YouTube, Instagram, TikTok, Facebook, Twitter/X and 1,000+ websites in HD quality, 4K or MP3 audio.
+      </p>
+
+      <div class="downloader-box">
+        <form class="downloader-form" id="sf_form">
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 24 24">
+              <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+            </svg>
+            <input 
+              type="text" 
+              class="search-input" 
+              id="sf_url" 
+              placeholder="Paste your video link here" 
+              autocomplete="off" 
+              autofocus
+            >
+          </div>
+
+          <div class="input-actions">
+            <button type="button" class="btn-paste" id="btn_paste" title="Paste from clipboard">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"/>
+              </svg>
+              Paste
+            </button>
+            <button type="button" class="btn-icon-action" id="btn_clear" title="Clear input">✕</button>
+          </div>
+
+          <button type="submit" class="btn-submit" id="sf_submit">
+            Download
+            <svg viewBox="0 0 24 24">
+              <path d="M5 3l14 9-14 9V3z"/>
+            </svg>
+          </button>
+        </form>
+
+        <p class="terms-hint">
+          By using our service you accept our <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a>.
+        </p>
+
+        <!-- DYNAMIC RESULTS AREA -->
+        <div class="result-section" id="result_section">
+          <!-- Loading Box -->
+          <div class="loading-box" id="loading_box">
+            <div class="spinner"></div>
+            <div class="loading-text">Searching and fetching video links...</div>
+          </div>
+
+          <!-- Error Box -->
+          <div class="error-box" id="error_box"></div>
+
+          <!-- Success Media Result Card -->
+          <div class="media-result-card" id="media_result_card" style="display: none;">
+            <div class="media-thumb-area">
+              <img id="media_thumb_img" src="/static/img/video.svg" alt="Video preview" class="media-thumb-img">
+              <span id="media_duration" class="media-duration-badge">00:00</span>
+            </div>
+
+            <div class="media-info-area">
+              <div>
+                <span id="media_platform" class="media-platform-tag">YouTube</span>
+                <h3 id="media_title" class="media-title">Loading title...</h3>
+              </div>
+
+              <div class="download-controls-row">
+                <select id="quality_select" class="quality-dropdown-select">
+                  <option value="0">MP4 1080p (Full HD)</option>
+                  <option value="1">MP4 720p (HD)</option>
+                  <option value="2">Audio MP3 (320kbps)</option>
+                </select>
+
+                <button type="button" id="btn_card_download" class="btn-card-download">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+                  </svg>
+                  Download
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SUPPORTED PLATFORMS ==================== -->
+  <section class="platforms-section">
+    <div class="container">
+      <div class="platforms-title">Supported Video Platforms</div>
+      <div class="platforms-grid">
+        <div class="platform-pill" data-platform="YouTube">
+          <img src="/static/img/youtube.svg" alt="YouTube" onerror="this.style.display='none'">
+          <span>YouTube</span>
+        </div>
+        <div class="platform-pill" data-platform="TikTok">
+          <img src="/static/img/tiktok.svg" alt="TikTok" onerror="this.style.display='none'">
+          <span>TikTok</span>
+        </div>
+        <div class="platform-pill" data-platform="Instagram">
+          <img src="/static/img/instagram.svg" alt="Instagram" onerror="this.style.display='none'">
+          <span>Instagram</span>
+        </div>
+        <div class="platform-pill" data-platform="Facebook">
+          <img src="/static/img/facebook.svg" alt="Facebook" onerror="this.style.display='none'">
+          <span>Facebook</span>
+        </div>
+        <div class="platform-pill" data-platform="Twitter">
+          <img src="/static/img/twitter.svg" alt="Twitter/X" onerror="this.style.display='none'">
+          <span>Twitter / X</span>
+        </div>
+        <div class="platform-pill" data-platform="Vimeo">
+          <img src="/static/img/vimeo.svg" alt="Vimeo" onerror="this.style.display='none'">
+          <span>Vimeo</span>
+        </div>
+        <div class="platform-pill" data-platform="Reddit">
+          <img src="/static/img/reddit.svg" alt="Reddit" onerror="this.style.display='none'">
+          <span>Reddit</span>
+        </div>
+        <div class="platform-pill" data-platform="Dailymotion">
+          <img src="/static/img/dailymotion.svg" alt="Dailymotion" onerror="this.style.display='none'">
+          <span>Dailymotion</span>
+        </div>
+        <div class="platform-pill" data-platform="SoundCloud">
+          <img src="/static/img/soundcloud.svg" alt="SoundCloud" onerror="this.style.display='none'">
+          <span>SoundCloud</span>
+        </div>
+        <div class="platform-pill" data-platform="Threads">
+          <img src="/static/img/threads.svg" alt="Threads" onerror="this.style.display='none'">
+          <span>Threads</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== HOW TO USE ==================== -->
+  <section class="steps-section" id="how-to">
+    <div class="container">
+      <h2 class="section-title">How to Download Online Videos</h2>
+      <p class="section-subtitle">
+        Follow these 3 simple steps to save any video directly to your computer or phone in seconds.
+      </p>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-badge">1</div>
+          <h3 class="step-title">Copy the Video Link</h3>
+          <p class="step-desc">
+            Open YouTube, TikTok, Facebook, or Instagram and copy the URL link of the video you want to download.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">2</div>
+          <h3 class="step-title">Paste URL into Search</h3>
+          <p class="step-desc">
+            Paste the copied video link into the green search box above and press the "Download" button.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">3</div>
+          <h3 class="step-title">Choose Format & Save</h3>
+          <p class="step-desc">
+            Select your preferred resolution (1080p, 720p, or MP3 audio) and click Download to save it immediately.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FEATURES ==================== -->
+  <section class="features-section">
+    <div class="container">
+      <h2 class="section-title">Why Choose SaveFrom Video Downloader?</h2>
+      <p class="section-subtitle">The fastest, safest, and most versatile web video downloader on the internet.</p>
+
+      <div class="features-grid">
+        <div class="feature-box">
+          <div class="feature-icon-wrap">
+            <img src="/static/img/4k.svg" alt="HD and 4K" onerror="this.src='/static/img/video.svg'">
+          </div>
+          <h3 class="feature-title">Crisp HD & 4K Quality</h3>
+          <p class="feature-desc">Download videos in their original uploaded quality from standard 720p up to pristine 1080p Full HD and 4K resolution.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-wrap">
+            <img src="/static/img/download.svg" alt="Free" onerror="this.src='/static/img/video.svg'">
+          </div>
+          <h3 class="feature-title">100% Free & Unlimited</h3>
+          <p class="feature-desc">Enjoy unlimited video downloads without paying any subscription fees or encountering hidden limits.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-wrap">
+            <img src="/static/img/mp3.svg" alt="Audio MP3" onerror="this.src='/static/img/video.svg'">
+          </div>
+          <h3 class="feature-title">Video to MP3 Audio</h3>
+          <p class="feature-desc">Extract crystal-clear audio tracks and music from video streams in 320kbps MP3 format with one click.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-wrap">
+            <img src="/static/img/video.svg" alt="Universal" onerror="this.src='/static/img/video.svg'">
+          </div>
+          <h3 class="feature-title">Universal Compatibility</h3>
+          <p class="feature-desc">Works seamlessly across Windows, macOS, Android, iPhone, and all major web browsers without requiring plugins.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FAQ ACCORDION ==================== -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <p class="section-subtitle">Everything you need to know about downloading videos online.</p>
+
+      <div class="faq-list">
+        <div class="faq-item active">
+          <button class="faq-question">
+            <span>How can I download videos from any website?</span>
+            <span class="faq-icon">▼</span>
+          </button>
+          <div class="faq-answer">
+            To download a video, simply copy its URL from the address bar or share menu of the website/app, paste it into the search box at the top of SaveFrom, and click "Download". Our system will process the video and provide you with instant download links in various resolutions.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Is it completely free to use?</span>
+            <span class="faq-icon">▼</span>
+          </button>
+          <div class="faq-answer">
+            Yes! Our online video downloader is 100% free with no hidden charges, trial periods, or registration required. You can download as many videos as you want.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Which video formats and qualities are supported?</span>
+            <span class="faq-icon">▼</span>
+          </button>
+          <div class="faq-answer">
+            We support MP4, WEBM, and MP3 audio formats. Available resolutions depend on the source video and include 360p, 480p, 720p (HD), 1080p (Full HD), 1440p (2K), and 2160p (4K).
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Where are the downloaded videos saved on my device?</span>
+            <span class="faq-icon">▼</span>
+          </button>
+          <div class="faq-answer">
+            Videos are automatically saved in your browser's default "Downloads" folder. On Windows, you can find them in `C:\Users\&lt;Username&gt;\Downloads`. On Android and iOS, they appear in your device's Files or Gallery app.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can I extract MP3 audio from video clips?</span>
+            <span class="faq-icon">▼</span>
+          </button>
+          <div class="faq-answer">
+            Yes, simply select "Audio MP3" from the quality dropdown list after searching your link, and click Download.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h4>SaveFrom<span>.net</span></h4>
+          <p>The leading free online video downloader allowing you to save high-quality media from all popular video platforms effortlessly.</p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Platforms</h5>
+          <ul>
+            <li><a href="#downloader">YouTube Downloader</a></li>
+            <li><a href="#downloader">TikTok Downloader</a></li>
+            <li><a href="#downloader">Instagram Reels</a></li>
+            <li><a href="#downloader">Facebook Videos</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Features</h5>
+          <ul>
+            <li><a href="#downloader">MP4 1080p Downloader</a></li>
+            <li><a href="#downloader">4K Ultra HD</a></li>
+            <li><a href="#downloader">MP3 Audio Extractor</a></li>
+            <li><a href="#how-to">How to use</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <ul>
+            <li><a href="#terms">Terms of Service</a></li>
+            <li><a href="#privacy">Privacy Policy</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 SaveFrom.net Clone - All rights reserved. For personal and educational use.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
